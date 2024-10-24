@@ -128,12 +128,33 @@ export default function Home() {
           )}
         </div>
 
-        <div className="ml-4 mt-6 lg:mt-0 flex justify-center items-center">
-          <div className="card w-60 bg-neutral shadow-xl">
+        <div className="ml-4 mt-6 lg:mt-0 flex justify-center items-center flex-col">
+          <div className="card w-60 bg-neutral shadow-xl mb-3">
             <div className="card-body">
               <h2 className="card-title">Skor : {score}</h2>
             </div>
           </div>
+          <div className="card w-60 bg-neutral shadow-xl">
+              <div className="card-body">
+                <h2 className="card-title">Informasi Project</h2>
+                <p>
+                  <strong>Nama:</strong> Muhammad Rizki Al-Fathir
+                </p>
+                <p>
+                  <strong>NIM:</strong> 1227050093
+                </p>
+                <div className="card-actions justify-end">
+                  <a
+                    href="https://github.com/alfthrpy/tts-app"
+                    className="btn btn-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Lihat Repo
+                  </a>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
       {isModalOpen && (
