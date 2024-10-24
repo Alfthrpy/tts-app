@@ -18,6 +18,7 @@ export default function Home() {
     Array.from({ length: 11 }, () => Array(10).fill(""))
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (e: any, row: number, col: number) => {
     const value = e.target.value.toUpperCase();
     const newUserAnswers = [...userAnswers];
