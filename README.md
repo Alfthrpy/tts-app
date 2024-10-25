@@ -7,7 +7,7 @@ Aplikasi ini dibuat sebagai tugas UTS untuk mata kuliah **Pengembangan Aplikasi 
 
 ## Deployment
 Aplikasi dideploy di platform vercel
-link akses : [text](https://tts-app-eta.vercel.app/)
+link akses : [Tts App](https://tts-app-eta.vercel.app/)
 
 ## Author
 Nama: **[Nama Kamu]**  
