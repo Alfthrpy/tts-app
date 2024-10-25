@@ -13,10 +13,6 @@ export const initialGrid = [
   ];
   
   
-  
-  
-  
-  
   export const acrossHints = [
       "1. Hewan Bercula",
       "3. Berisa ingin muntah",

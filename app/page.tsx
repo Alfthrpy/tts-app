@@ -1,12 +1,11 @@
 "use client";
+import HintSectionAcross from "@/components/hintSectionAcross";
 import {
-  acrossHints,
-  downHints,
   initialAnswers,
   initialGrid,
   questionNumbers,
 } from "@/lib/data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Home() {
@@ -14,12 +13,16 @@ export default function Home() {
   const [answers] = useState(initialAnswers);
   const [score, setScore] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
+  const [isStarted, setIsStarted] = useState(false);
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
   const [userAnswers, setUserAnswers] = useState(
     Array.from({ length: 11 }, () => Array(10).fill(""))
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (e: any, row: number, col: number) => {
+  // Handle input changes in the grid
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, row: number, col: number) => {
     const value = e.target.value.toUpperCase();
     const newUserAnswers = [...userAnswers];
     newUserAnswers[row] = [...userAnswers[row]];
@@ -27,23 +30,23 @@ export default function Home() {
     setUserAnswers(newUserAnswers);
   };
 
+  // Clear user answers
   const clearAnswers = () => {
     setUserAnswers(Array.from({ length: 11 }, () => Array(10).fill("")));
     toast.success("Answers cleared!");
   };
 
+  // Check user answers and calculate score
   const checkAnswers = () => {
     let correct = true;
-    let score = 0;
+
 
     for (let row = 0; row < 11; row++) {
       for (let col = 0; col < 10; col++) {
-        console.log(userAnswers[row][col], answers[row][col]);
         if (
           initialGrid[row][col] &&
           userAnswers[row][col] === answers[row][col]
         ) {
-          score += 1;
         } else if (
           initialGrid[row][col] &&
           userAnswers[row][col] !== answers[row][col]
@@ -54,13 +57,37 @@ export default function Home() {
     }
 
     if (correct) {
+      setScore(timeLeft); // Skor berdasarkan waktu yang tersisa
       toast.success("Semua jawaban benar!");
       setIsModalOpen(true);
+      setIsStarted(false)
+      setTimeLeft(600)
+      
     } else {
       toast.error("Ada jawaban yang salah!");
     }
-    setScore(score);
   };
+
+  // Handle countdown
+  useEffect(() => {
+    if (isStarted && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+
+      return () => clearInterval(timer); 
+    } else if (timeLeft === 0) {
+      setScore(0); 
+      setIsModalOpen(true); 
+    }
+  }, [isStarted, timeLeft]);
+
+  
+  const startCountdown = () => {
+    setIsStarted(true); 
+  };
+
+  
 
   return (
     <div className="min-h-screen bg-base-200 flex flex-col items-center justify-center py-10 px-4">
@@ -68,38 +95,7 @@ export default function Home() {
 
       <div className="lg:flex flex-row">
         {/* Hints section */}
-        <div className="mr-4 flex flex-col">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-2">Pertanyaan Mendatar</h2>
-            <ul className="text-left list-disc pl-5 text-sm lg:text-base">
-              {acrossHints.map((hint, index) => (
-                <li key={index} className="mb-1">
-                  {hint}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Pertanyaan Menurun</h2>
-            <ul className="text-left list-disc pl-5 text-sm lg:text-base">
-              {downHints.map((hint, index) => (
-                <li key={index} className="mb-1">
-                  {hint}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <button
-            onClick={checkAnswers}
-            className="btn btn-success mt-6 px-4 py-2 lg:px-8 lg:py-2 mb-2"
-          >
-            Cek Jawaban
-          </button>
-          <button onClick={clearAnswers} className="btn btn-warning mb-6">
-            Bersihkan Jawaban
-          </button>
-        </div>
+        <HintSectionAcross checkAnswers={checkAnswers} clearAnswers={clearAnswers} />
 
         {/* Grid layout */}
         <div className="grid grid-cols-10 gap-1 bg-neutral p-4 rounded-lg shadow-lg">
@@ -129,39 +125,50 @@ export default function Home() {
         </div>
 
         <div className="ml-4 mt-6 lg:mt-0 flex justify-center items-center flex-col">
-          <div className="card w-60 bg-neutral shadow-xl mb-3">
-            <div className="card-body">
-              <h2 className="card-title">Skor : {score}</h2>
-            </div>
+          <div className="card w-60 bg-neutral shadow-xl mb-3 p-4">
+            <h3 className="mb-2 card-title">Waktu Tersisa</h3>
+            {isStarted ? (
+              <span className="countdown font-mono text-2xl">
+                <span style={{ "--value": minutes } as React.CSSProperties}></span>
+                m
+                <span style={{ "--value": seconds < 10 ? `0${seconds}` : seconds } as React.CSSProperties}></span>
+                s
+              </span>
+            ) : (
+              <button className="btn btn-primary" onClick={startCountdown}>
+                Mulai
+              </button>
+            )}
           </div>
           <div className="card w-60 bg-neutral shadow-xl">
-              <div className="card-body">
-                <h2 className="card-title">Informasi Project</h2>
-                <p>
-                  <strong>Nama:</strong> Muhammad Rizki Al-Fathir
-                </p>
-                <p>
-                  <strong>NIM:</strong> 1227050093
-                </p>
-                <div className="card-actions justify-end">
-                  <a
-                    href="https://github.com/alfthrpy/tts-app"
-                    className="btn btn-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Lihat Repo
-                  </a>
-                </div>
+            <div className="card-body">
+              <h2 className="card-title">Informasi Project</h2>
+              <p>
+                <strong>Nama:</strong> Muhammad Rizki Al-Fathir
+              </p>
+              <p>
+                <strong>NIM:</strong> 1227050093
+              </p>
+              <div className="card-actions justify-end">
+                <a
+                  href="https://github.com/alfthrpy/tts-app"
+                  className="btn btn-primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Lihat Repo
+                </a>
               </div>
             </div>
+          </div>
         </div>
       </div>
+
       {isModalOpen && (
         <div className="modal modal-open">
           <div className="modal-box">
-            <h2 className="font-bold text-lg">Selamat!</h2>
-            <p className="py-4">Semua jawaban benar! Skor Anda: {score}</p>
+            <h2 className="font-bold text-lg">Skor</h2>
+            <p className="py-4">Skor Anda: {score}</p>
             <div className="modal-action">
               <button
                 className="btn btn-primary"
