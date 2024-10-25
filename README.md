@@ -10,10 +10,7 @@ Aplikasi dideploy di platform vercel
 link akses : [Tts App](https://tts-app-eta.vercel.app/)
 
 ## Author
-Nama: **[Nama Kamu]**  
-NIM: **[NIM Kamu]**  
-Mata Kuliah: **Pengembangan Aplikasi Mobile**
+Nama: **Muhammad Rizki Al-Fathir**  
+NIM: **1227050093**  
+Mata Kuliah: **Pengembangan Aplikasi Web**
 
---- 
-
-Silakan sesuaikan detailnya sesuai kebutuhan proyekmu!
