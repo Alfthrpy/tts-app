@@ -1,9 +1,13 @@
 
-# Tugas UTS Pengembangan Aplikasi Mobile
-## Aplikasi Teka Teki SIlang
+# Tugas UTS Pengembangan Aplikasi Web
+## Aplikasi Teka Teki Silang
 
 ## Deskripsi
-Aplikasi ini dibuat sebagai tugas UTS untuk mata kuliah **Pengembangan Aplikasi Mobile**. Aplikasi dibangun menggunakan framework **Next.js** dengan bantuan library **Daisyui Tailwind**
+Aplikasi ini dibuat sebagai tugas UTS untuk mata kuliah **Pengembangan Aplikasi Web**. Aplikasi
+
+## Tech Stack (Tools)
+- Framework Next.js
+- Tailwind dengan kit Daisyui
 
 ## Deployment
 Aplikasi dideploy di platform vercel
